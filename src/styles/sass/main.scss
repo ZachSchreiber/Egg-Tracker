@@ -1,0 +1,56 @@
+/********** Setup ***********/
+@import 'variables';
+@import 'reset';
+@import 'fonts';
+
+body {
+  background-image: url('https://zachschreiber.github.io/Stacy-runs-obx/images/cheap_diagonal_fabric.png');
+  background-attachment: fixed;
+}
+
+table {
+  width: 90%;
+  margin: 5% auto;
+  background-color: #fff;
+  color: #414141;
+  -moz-box-shadow: 3px 5px 22px #3d3c3d;
+  -webkit-box-shadow: 3px 5px 22px #3d3c3d;
+  box-shadow: 3px 5px 22px #3d3c3d;
+}
+
+tbody {
+
+  tr {
+    transition: .2s;
+    &:hover {
+      background-color: #f2e8cd;
+    }
+  &:nth-child(1) {
+  color: #f0af13;
+  font-size: 2em;
+  }
+  &:nth-child(odd) {
+    background-color: #ececec;
+    &:hover {
+      background-color: #f2e8cd;
+    }
+  }
+}
+}
+
+th {
+   padding: 20px 0 20px 30px;
+   text-align: left;
+   background-color: #4a87b2;
+   font-family: 'Cabin Sketch', cursive;
+}
+
+td {
+  width: 33%;
+  padding: 20px 0 20px 30px;
+  margin: 2px;
+  font-size: 1.2em;
+  font-family: 'Puritan', sans-serif;
+
+
+}
