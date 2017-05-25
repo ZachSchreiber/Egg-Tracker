@@ -2,6 +2,7 @@
   "name": "base",
   "version": "0.0.1",
   "private": true,
+  "homepage": "https://zachschreiber.github.io/table-view",
   "devDependencies": {
     "babel-eslint": "^7.1.1",
     "concurrently": "3.0.0",
