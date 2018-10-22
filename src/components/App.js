@@ -1,43 +1,76 @@
 import React from 'react';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import Home from './Home';
+import WidgetContainer from './WidgetContainer';
 import data from '../data';
-import Tablerow from './tableRow';
+import NotFound from './NotFound';
 
 class App extends React.Component {
-  constructor() {
-     super();
-     this.items = data;
+	constructor(props) {
+		super(props);
+		const weeklyCount = data.reduce((acc, curr, index) => {
+			return acc + curr.eggs;
+		}, 0);
+		this.state = {
+			hens: data,
+			weeklyCount
+		};
+	}
 
-   }
-
-
-//Used Object.keys() to create key values for each object. Then ran Object.map().
-//Using a facy es6 arrow fuction, I use the key value as an argument to reference each object.
-//I pass the data from each object to the Tablerow component with the details attribute.
-//The data is passed using React 'props'.
-//Also considered using the forEach() method, but this worked.
-
-
-  render() {
-    return (
-      <div>
-    <table className="table">
-      <tbody>
-      <tr>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Home</th>
-      </tr>
-      {
-      Object
-          .keys(this.items)
-          .map(key => <Tablerow key={key} index={key} details={this.items[key]}/> )
-        }
-  </tbody>
-    </table>
-  </div>
-    )
+  //iterates through the hens array and returns the addition of all eggs
+  updatedEggs = arr => {
+    return arr.reduce((acc, curr, index) => {
+      return acc + parseInt(curr.eggs, 0);
+    }, 0);
   }
 
+	updateCount = (index, eggCount) => {
+		const hensCopy = [...this.state.hens];
+    //if the user clicks the first egg twice, it goes to zero eggs
+		if (this.state.hens[index].eggs === '1' && parseInt(eggCount, 0) === 1) {
+			hensCopy[index].eggs = 0;
+		} else {
+			hensCopy[index].eggs = eggCount;
+		}
+		const updatedEggs = this.updatedEggs(hensCopy);
+		this.setState(prevState => ({
+      ...prevState,
+      hens: hensCopy,
+      weeklyCount: updatedEggs
+    }));
+	}
+
+	addNewHen = (newHen) => {
+		const hensCopy = [...this.state.hens];
+		hensCopy.unshift(newHen);
+		const updatedEggs = this.updatedEggs(hensCopy);
+    this.setState(prevState => ({
+      ...prevState,
+      hens: hensCopy,
+      weeklyCount: updatedEggs
+    }));
+	}
+
+  deleteBird = (index) => {
+    const hensCopy = [...this.state.hens];
+    hensCopy.splice(index, 1);
+    const updatedEggs = this.updatedEggs(hensCopy);
+    this.setState(prevState => ({
+      ...prevState,
+      hens: hensCopy,
+      weeklyCount: updatedEggs
+    }));
+  };
+
+	render() {
+		return (<BrowserRouter>
+			<Switch>
+				<Route exact path="/" render={() => <WidgetContainer updateCount={this.updateCount} deleteBird={this.deleteBird} {...this.state} isAuthed={true}/>}/>
+				<Route path="/edit" render={() => <Home addNewHen={this.addNewHen} {...this.state} isAuthed={true}/>}/>
+				<Route component={NotFound}/>
+			</Switch>
+		</BrowserRouter>)
+	}
 }
 
 export default App;
